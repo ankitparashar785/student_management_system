@@ -2,29 +2,30 @@
 
 include 'connection.php';
   $id=$_POST['std_id'];
-  $query="SELECT * FROM attandancedetails WHERE id='{$id}'"or die("A");
-  $run=mysqli_query($conn,$query);
-  $var="";
-  $s=1;
-  if(mysqli_num_rows($run))
-  {
-  	while($rows=mysqli_fetch_assoc($run))
-  	{
-  	$output.="  <table class='table'>
+    $sdate=$_POST['start_date'];
+  $edate=$_POST['end_date'];
 
-    <tbody>
-    <tr>
-      <th scope='row'>$s</th>
-      <td>$rows['std_name'];</td>
-      <td> $rows['date_a'];</td>
-      <td>$rows['status'];</td>
-    </tr>
-  </tbody>
- 
-  </table>";
-  $s++;
-}
-mysql_close($conn);
-echo $output;
-  }
+  $output="";
+  $sql="SELECT * FROM attandancedetails WHERE sid='{$id}' AND (date_a BETWEEN '{$sdate}' AND '{$edate}' ) "or die("a");
+  $run= mysqli_query($conn,$sql);
+ $c=1;
+
+  $output.="<table class='table table-dark'>
+    <tbody>";
+    while ( $rows=mysqli_fetch_assoc($run)) {
+    	# code...
+    	$output.="<tr><td>{$c}
+
+    	</td><td class='text-center'>{$rows['date_a']}</td><td class='text-center'>{$rows['status']}</td>
+
+
+    	</tr>";
+    	$c++;
+    }
+    $output.="</tbody></table>";
+    echo $output;
+     
+  
+  
+
 ?>
